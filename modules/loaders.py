@@ -90,7 +90,7 @@ def get_gpu_memory_keys():
     return [k for k in shared.gradio if k.startswith('gpu_memory')]
 
 
-@functools.cache
+@functools.lru_cache(maxsize=None)
 def get_all_params():
     all_params = set()
     for k in loaders_and_params:

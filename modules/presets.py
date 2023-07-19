@@ -40,7 +40,7 @@ def load_preset(name):
     return generate_params
 
 
-@functools.cache
+@functools.lru_cache(maxsize=None)
 def load_preset_memoized(name):
     return load_preset(name)
 

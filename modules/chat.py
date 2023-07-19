@@ -533,7 +533,7 @@ def load_character(character, name1, name2, instruct=False):
     return name1, name2, picture, greeting, context, turn_template.replace("\n", r"\n")
 
 
-@functools.cache
+@functools.lru_cache(maxsize=None)
 def load_character_memoized(character, name1, name2, instruct=False):
     return load_character(character, name1, name2, instruct=instruct)
 
