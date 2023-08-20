@@ -105,13 +105,13 @@ def load_tokenizer(model_name, model):
         model_name.startswith("stabilityai_japanese-instructblip") or \
         model_name.startswith("stabilityai_japanese-stablelm-base-alpha-"):
         try:
-            tokenizer = LlamaTokenizer.from_pretrained("novelai/nerdstash-tokenizer-v1", 
+            tokenizer = LlamaTokenizer.from_pretrained(path_to_model, 
                 trust_remote_code=shared.args.trust_remote_code,
                 use_fast=False,
                 additional_special_tokens=['▁▁']
             )
         except ValueError:
-            tokenizer = LlamaTokenizer.from_pretrained("novelai/nerdstash-tokenizer-v1", 
+            tokenizer = LlamaTokenizer.from_pretrained(path_to_model, 
                 trust_remote_code=shared.args.trust_remote_code,
                 use_fast=True,
                 additional_special_tokens=['▁▁']
