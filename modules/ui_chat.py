@@ -1,6 +1,7 @@
 import json
 from functools import partial
 from pathlib import Path
+import deepl  # Dodane
 
 import gradio as gr
 from PIL import Image
@@ -9,6 +10,9 @@ from modules import chat, prompts, shared, ui, utils
 from modules.html_generator import chat_html_wrapper
 from modules.text_generation import stop_everything_event
 from modules.utils import gradio
+
+# Inicjalizacja tłumacza DeepL
+translator = deepl.Translator(api_key="75e2a54d-01ce-9de2-6013-2515467b7ba0:fx")  # Dodane
 
 inputs = ('Chat input', 'interface_state')
 reload_arr = ('history', 'name1', 'name2', 'mode', 'chat_style')
@@ -125,7 +129,6 @@ def create_chat_settings_ui():
 
             shared.gradio['Submit tavern character'] = gr.Button(value='Submit', interactive=False)
 
-
 def create_event_handlers():
 
     # Obsolete variables, kept for compatibility with old extensions
@@ -136,6 +139,8 @@ def create_event_handlers():
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
         lambda x: (x, ''), gradio('textbox'), gradio('Chat input', 'textbox'), show_progress=False).then(
         chat.generate_chat_reply_wrapper, gradio(inputs), gradio('display', 'history'), show_progress=False).then(
+        lambda original_response: translator.translate_text(original_response, target_lang="PL"),  # Dodane
+        gradio('display', 'history'), show_progress=False).then(  # Dodane
         ui.gather_interface_values, gradio(shared.input_elements), gradio('interface_state')).then(
         chat.save_persistent_history, gradio('history', 'character_menu', 'mode'), None).then(
         lambda: None, None, None, _js=f'() => {{{ui.audio_notification_js}}}')
